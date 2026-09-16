@@ -98,10 +98,10 @@ export default function AuthGate() {
   };
 
   return (
-    <Box minH="100vh" bg="#080808" color="white" display="flex" alignItems="center" py={{ base: '8', md: '12' }}>
+    <Box minH="100vh" bg="#080808" color="white" display="flex" alignItems="center" py={{ base: '4', md: '6' }}>
       <Container maxW="1100px">
-        <SimpleGrid columns={{ base: 1, lg: 2 }} gap={{ base: '8', lg: '16' }} alignItems="center">
-          <VStack align="start" gap="5" display={{ base: 'none', lg: 'flex' }}>
+        <SimpleGrid columns={{ base: 1, lg: 2 }} gap={{ base: '6', lg: '12' }} alignItems="center">
+          <VStack align="start" gap="4" display={{ base: 'none', lg: 'flex' }}>
             <HStack gap="3">
               <Box className="brand-mark">ZT</Box>
               <Box>
@@ -109,61 +109,61 @@ export default function AuthGate() {
                 <Text color="#888" fontSize="9px" letterSpacing="2.5px">REFINED SALT</Text>
               </Box>
             </HStack>
-            <Heading fontSize="58px" lineHeight="1.03" mt="5">Welcome to <Box as="span" className="gold-text">ZT ZAIQO.</Box></Heading>
-            <Text color="#999" fontSize="17px" lineHeight="1.8" maxW="500px">Register your shop once to access Zohan Traders products, carton information and wholesale contact details.</Text>
-            <HStack gap="8" pt="3">
-              <VStack align="start"><Text color="#d4af37" fontWeight="800" fontSize="22px">600g</Text><Text color="#666" fontSize="11px">POUCH</Text></VStack>
-              <VStack align="start"><Text color="#d4af37" fontWeight="800" fontSize="22px">700g</Text><Text color="#666" fontSize="11px">POUCH</Text></VStack>
-              <VStack align="start"><Text color="#d4af37" fontWeight="800" fontSize="22px">800g</Text><Text color="#666" fontSize="11px">POUCH</Text></VStack>
+            <Heading fontSize="52px" lineHeight="1.03" mt="3">Welcome to <Box as="span" className="gold-text">ZT ZAIQO.</Box></Heading>
+            <Text color="#999" fontSize="16px" lineHeight="1.7" maxW="500px">Register your shop once to access Zohan Traders products, carton information and wholesale contact details.</Text>
+            <HStack gap="7" pt="1">
+              <VStack align="start"><Text color="#d4af37" fontWeight="800" fontSize="20px">600g</Text><Text color="#666" fontSize="10px">POUCH</Text></VStack>
+              <VStack align="start"><Text color="#d4af37" fontWeight="800" fontSize="20px">700g</Text><Text color="#666" fontSize="10px">POUCH</Text></VStack>
+              <VStack align="start"><Text color="#d4af37" fontWeight="800" fontSize="20px">800g</Text><Text color="#666" fontSize="10px">POUCH</Text></VStack>
             </HStack>
           </VStack>
 
-          <Box bg="#111" border="1px solid rgba(212,175,55,.2)" borderRadius="24px" p={{ base: '6', md: '9' }} boxShadow="0 30px 80px rgba(0,0,0,.35)">
-            <VStack align="stretch" gap="6">
+          <Box bg="#111" border="1px solid rgba(212,175,55,.2)" borderRadius="20px" p={{ base: '5', md: '6' }} boxShadow="0 25px 65px rgba(0,0,0,.35)">
+            <VStack align="stretch" gap="4">
               <Box>
                 <Text className="section-kicker">CUSTOMER PORTAL</Text>
-                <Heading mt="2" fontSize="32px">{mode === 'signup' ? 'Create your account' : 'Welcome back'}</Heading>
-                <Text color="#777" mt="2" fontSize="14px">{mode === 'signup' ? 'Register first, then you will enter the website automatically.' : 'Sign in to continue to Zohan Traders.'}</Text>
+                <Heading mt="1" fontSize="28px">{mode === 'signup' ? 'Create your account' : 'Welcome back'}</Heading>
+                <Text color="#777" mt="1" fontSize="13px">{mode === 'signup' ? 'Register first, then you will enter the website automatically.' : 'Sign in to continue to Zohan Traders.'}</Text>
               </Box>
 
-              <HStack bg="#080808" p="1" borderRadius="12px">
-                <Button flex="1" variant="ghost" color={mode === 'signup' ? '#d4af37' : '#777'} onClick={() => { setMode('signup'); setError(''); }}>Sign Up</Button>
-                <Button flex="1" variant="ghost" color={mode === 'signin' ? '#d4af37' : '#777'} onClick={() => { setMode('signin'); setError(''); }}>Sign In</Button>
+              <HStack bg="#080808" p="1" borderRadius="10px">
+                <Button flex="1" size="sm" variant="ghost" color={mode === 'signup' ? '#d4af37' : '#777'} onClick={() => { setMode('signup'); setError(''); }}>Sign Up</Button>
+                <Button flex="1" size="sm" variant="ghost" color={mode === 'signin' ? '#d4af37' : '#777'} onClick={() => { setMode('signin'); setError(''); }}>Sign In</Button>
               </HStack>
 
               <Box as="form" onSubmit={submit}>
-                <VStack align="stretch" gap="4">
+                <VStack align="stretch" gap="2.5">
                   {mode === 'signup' && <>
                     <Field.Root required>
-                      <Field.Label color="#aaa">Full Name</Field.Label>
-                      <Input value={form.name} onChange={(e) => update('name', e.target.value)} placeholder="Your name" bg="#080808" borderColor="#2b2b2b" />
+                      <Field.Label color="#aaa" fontSize="13px" mb="1">Full Name</Field.Label>
+                      <Input size="sm" value={form.name} onChange={(e) => update('name', e.target.value)} placeholder="Your name" bg="#080808" borderColor="#2b2b2b" />
                     </Field.Root>
                     <Field.Root required>
-                      <Field.Label color="#aaa">Shop / Business Name</Field.Label>
-                      <Input value={form.shop} onChange={(e) => update('shop', e.target.value)} placeholder="Your shop name" bg="#080808" borderColor="#2b2b2b" />
+                      <Field.Label color="#aaa" fontSize="13px" mb="1">Shop / Business Name</Field.Label>
+                      <Input size="sm" value={form.shop} onChange={(e) => update('shop', e.target.value)} placeholder="Your shop name" bg="#080808" borderColor="#2b2b2b" />
                     </Field.Root>
                     <Field.Root required>
-                      <Field.Label color="#aaa">Phone Number</Field.Label>
-                      <Input value={form.phone} onChange={(e) => update('phone', e.target.value)} placeholder="03XX XXXXXXX" bg="#080808" borderColor="#2b2b2b" />
+                      <Field.Label color="#aaa" fontSize="13px" mb="1">Phone Number</Field.Label>
+                      <Input size="sm" value={form.phone} onChange={(e) => update('phone', e.target.value)} placeholder="03XX XXXXXXX" bg="#080808" borderColor="#2b2b2b" />
                     </Field.Root>
                   </>}
                   <Field.Root required>
-                    <Field.Label color="#aaa">Email</Field.Label>
-                    <Input type="email" value={form.email} onChange={(e) => update('email', e.target.value)} placeholder="you@example.com" bg="#080808" borderColor="#2b2b2b" />
+                    <Field.Label color="#aaa" fontSize="13px" mb="1">Email</Field.Label>
+                    <Input size="sm" type="email" value={form.email} onChange={(e) => update('email', e.target.value)} placeholder="you@example.com" bg="#080808" borderColor="#2b2b2b" />
                   </Field.Root>
                   <Field.Root required>
-                    <Field.Label color="#aaa">Password</Field.Label>
-                    <Input type="password" value={form.password} onChange={(e) => update('password', e.target.value)} placeholder="Minimum 6 characters" bg="#080808" borderColor="#2b2b2b" />
+                    <Field.Label color="#aaa" fontSize="13px" mb="1">Password</Field.Label>
+                    <Input size="sm" type="password" value={form.password} onChange={(e) => update('password', e.target.value)} placeholder="Minimum 6 characters" bg="#080808" borderColor="#2b2b2b" />
                   </Field.Root>
 
-                  {error && <Text color="#e57373" fontSize="13px">{error}</Text>}
-                  <Button type="submit" className="gold-button" size="lg" w="full">
+                  {error && <Text color="#e57373" fontSize="12px">{error}</Text>}
+                  <Button type="submit" className="gold-button" size="md" w="full" mt="1">
                     {mode === 'signup' ? 'Create Account & Continue' : 'Sign In & Continue'}
                   </Button>
                 </VStack>
               </Box>
 
-              <Text color="#555" fontSize="11px" lineHeight="1.6">By continuing, you agree to use this customer portal for Zohan Traders business communication.</Text>
+              <Text color="#555" fontSize="10px" lineHeight="1.5">By continuing, you agree to use this customer portal for Zohan Traders business communication.</Text>
             </VStack>
           </Box>
         </SimpleGrid>
