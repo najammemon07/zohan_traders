@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import Dashboard from './Dashboard';
 import {
   Box,
@@ -7,7 +7,6 @@ import {
   Flex,
   Heading,
   HStack,
-  IconButton,
   SimpleGrid,
   Text,
   VStack,
@@ -34,63 +33,217 @@ const exportOptions = [
   { title: 'Custom Demand', detail: 'Flexible Packing', copy: 'Packaging format and quantity can be discussed according to the customer’s requirement.' },
 ];
 
-const navItems = [
-  ['Home', '#home'],
-  ['About', '#about'],
-  ['Products', '#products'],
-  ['Cartons', '#cartons'],
-  ['Export', '#export'],
-  ['Dashboard', '#dashboard'],
-  ['Contact', '#contact'],
-];
-
 function AppLinkButton({ href, children, className, size = 'md' }: { href: string; children: ReactNode; className: string; size?: 'sm' | 'md' | 'lg' }) {
   return <Button asChild className={className} size={size}><a href={href}>{children}</a></Button>;
 }
 
 export default function App() {
-  const [menuOpen, setMenuOpen] = useState(false);
-
   return (
     <Box bg="#080808" color="white" minH="100vh">
-      <Box as="header" position="sticky" top="0" zIndex="20" bg="rgba(8,8,8,.88)" backdropFilter="blur(18px)" borderBottom="1px solid rgba(212,175,55,.14)">
-        <Container maxW="1200px" py="16px">
-          <Flex align="center" justify="space-between">
-            <a href="#home" aria-label="Zohan Traders home"><HStack gap="3"><Box className="brand-mark">ZT</Box><Box display={{ base: 'none', sm: 'block' }}><Text fontWeight="800" letterSpacing="2px" fontSize="14px">ZOHAN TRADERS</Text><Text color="#a6a6a6" fontSize="9px" letterSpacing="2.5px">REFINED SALT</Text></Box></HStack></a>
-            <HStack gap="7" display={{ base: 'none', md: 'flex' }}>{navItems.map(([label, href]) => <a className="nav-link" key={label} href={href}>{label}</a>)}</HStack>
-            <HStack gap="3"><Box display={{ base: 'none', sm: 'block' }}><AppLinkButton href="#contact" className="gold-button" size="sm">Get in Touch</AppLinkButton></Box><IconButton aria-label="Toggle navigation" display={{ base: 'inline-flex', md: 'none' }} variant="outline" borderColor="#333" onClick={() => setMenuOpen(!menuOpen)}><Box as="span" fontSize="22px">{menuOpen ? '×' : '☰'}</Box></IconButton></HStack>
-          </Flex>
-          {menuOpen && <VStack align="stretch" pt="5" pb="2" gap="1" display={{ md: 'none' }}>{navItems.map(([label, href]) => <a className="mobile-link" key={label} href={href} onClick={() => setMenuOpen(false)}>{label}</a>)}</VStack>}
-        </Container>
+      <Box className="side-nav">
+        <Box className="side-brand">
+          <Box className="brand-mark">ZT</Box>
+          <Box className="side-brand-name">
+            <Text fontWeight="800" letterSpacing="2px" fontSize="14px">ZOHAN TRADERS</Text>
+            <Text color="#888" fontSize="9px" letterSpacing="2px">REFINED SALT</Text>
+          </Box>
+        </Box>
+
+        <VStack className="side-menu" align="stretch" gap="2">
+          {[
+            ['⌂', 'Home', '#dashboard'],
+            ['▦', 'Products', '#products'],
+            ['▤', 'Cartons', '#cartons'],
+            ['⇧', 'Export', '#export'],
+            ['◉', 'Contact', '#contact'],
+          ].map(([icon, label, href]) => (
+            <a className="side-item" key={label} href={href}>
+              <Box className="side-icon">{icon}</Box>
+              <Text className="side-label">{label}</Text>
+            </a>
+          ))}
+        </VStack>
+
+        <Box className="side-bottom">
+          <Button
+            className="side-logout"
+            onClick={() => {
+              localStorage.removeItem('zohan_traders_session');
+              window.location.reload();
+            }}
+          >
+            <Box className="side-icon">↪</Box>
+            <Text className="side-label">Sign Out</Text>
+          </Button>
+        </Box>
       </Box>
 
-      <Box id="home" className="hero-section"><Container maxW="1200px" py={{ base: '88px', md: '145px' }}><SimpleGrid columns={{ base: 1, lg: 2 }} gap={{ base: '12', lg: '20' }} alignItems="center"><VStack align="start" gap="6"><HStack className="eyebrow" gap="3"><Box className="eyebrow-line" /><Text>QUALITY YOU CAN TRUST</Text></HStack><Heading className="hero-title" fontSize={{ base: '48px', sm: '62px', md: '78px' }} lineHeight=".98">Pure Taste.<br /><Box as="span" className="gold-text">Trusted Quality.</Box></Heading><Text color="#b8b8b8" fontSize={{ base: '16px', md: '19px' }} lineHeight="1.8" maxW="610px">Premium refined iodized salt from Zohan Traders — carefully processed, hygienically packed and made for everyday cooking.</Text><HStack gap="4" pt="2" flexWrap="wrap"><AppLinkButton href="#products" className="gold-button" size="lg">Explore Products</AppLinkButton><AppLinkButton href="#about" className="dark-button" size="lg">Our Story</AppLinkButton></HStack><HStack pt="5" gap={{ base: '6', md: '10' }} flexWrap="wrap">{['Refined', 'Iodized', 'Quality Packed'].map((item) => <HStack key={item} gap="2"><Box className="check-dot">✓</Box><Text color="#c9c9c9" fontSize="13px">{item}</Text></HStack>)}</HStack></VStack><Box className="hero-badge" display={{ base: 'none', lg: 'block' }}><Box className="hero-circle"><Text className="circle-small">ZT</Text><Text className="circle-title">ZAIQO</Text><Text className="circle-subtitle">REFINED IODIZED SALT</Text><Box className="circle-divider" /><Text className="circle-copy">Pure • Clean • Reliable</Text></Box></Box></SimpleGrid></Container></Box>
+      <Box className="dashboard-main">
+        <Box id="dashboard">
+          <Dashboard />
+        </Box>
 
-      <Box className="trust-strip"><Container maxW="1200px" py="6"><SimpleGrid columns={{ base: 2, md: 4 }} gap="5">{[['01', 'Refined Quality'], ['02', 'Iodized Salt'], ['03', 'Clean Packaging'], ['04', 'Trusted Brand']].map(([number, title]) => <HStack key={number} gap="3"><Text color="#d4af37" fontWeight="800">{number}</Text><Text color="#bdbdbd" fontSize="13px">{title}</Text></HStack>)}</SimpleGrid></Container></Box>
+        <Box id="products">
+          <Container maxW="1200px" py={{ base: '80px', md: '110px' }}>
+            <Flex justify="space-between" align={{ base: 'start', md: 'end' }} gap="6" mb="10" direction={{ base: 'column', md: 'row' }}>
+              <VStack align="start" gap="3">
+                <Text className="section-kicker">OUR PRODUCTS</Text>
+                <Heading fontSize={{ base: '34px', md: '48px' }}>ZT ZAIQO Range</Heading>
+              </VStack>
+              <Text color="#777" maxW="390px" lineHeight="1.7">Choose the pouch size that fits your home or retail needs.</Text>
+            </Flex>
+            <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} gap="6">
+              {products.map((product) => (
+                <Box className="product-card" key={product.size}>
+                  <Flex justify="space-between" align="start">
+                    <Text className="product-size">{product.size}</Text>
+                    <Text className="product-tag">{product.tag}</Text>
+                  </Flex>
+                  <Heading size="md" mt="8">ZT ZAIQO</Heading>
+                  <Text color="#d4af37" fontSize="13px" mt="2">REFINED IODIZED SALT</Text>
+                  <Text color="#888" mt="5" lineHeight="1.7">{product.description}</Text>
+                  <Box className="product-footer">
+                    <Text color="#777" fontSize="12px">Premium everyday quality</Text>
+                    <Text color="#d4af37">→</Text>
+                  </Box>
+                </Box>
+              ))}
+            </SimpleGrid>
+          </Container>
+        </Box>
 
-      <Box id="about" className="section-light"><Container maxW="1200px" py={{ base: '80px', md: '110px' }}><SimpleGrid columns={{ base: 1, md: 2 }} gap={{ base: '10', md: '20' }} alignItems="center"><VStack align="start" gap="5"><Text className="section-kicker">ABOUT ZOHAN TRADERS</Text><Heading fontSize={{ base: '36px', md: '52px' }} lineHeight="1.05">Simple product.<br /><Box as="span" className="gold-text">Serious standards.</Box></Heading><Text color="#a7a7a7" lineHeight="1.9" maxW="570px">Zohan Traders is focused on delivering dependable refined iodized salt with a clean, premium presentation. Our ZT ZAIQO range is designed around consistency, quality and value.</Text><AppLinkButton href="#contact" className="dark-button">Talk to Zohan Traders</AppLinkButton></VStack><Box className="about-card"><Text className="about-card-label">ZT ZAIQO</Text><Heading fontSize="32px" mt="3">Refined Iodized Salt</Heading><Text color="#999" mt="4" lineHeight="1.8">A modern salt brand built for households, retailers and growing distribution.</Text><Box className="gold-rule" /><Text color="#d4af37" fontSize="12px" letterSpacing="3px">ZOHAN TRADERS</Text></Box></SimpleGrid></Container></Box>
+        <Box id="cartons" className="carton-section">
+          <Container maxW="1200px" py={{ base: '75px', md: '100px' }}>
+            <VStack align="start" gap="4" mb="10">
+              <Text className="section-kicker">CARTON PACKING</Text>
+              <Heading fontSize={{ base: '36px', md: '50px' }}>Packing by pouch size.</Heading>
+              <Text color="#999" maxW="680px" lineHeight="1.8">
+                Each ZT ZAIQO pouch size has its own standard carton quantity. Scan the QR code printed on our carton to visit Zohan Traders and check the packing details.
+              </Text>
+            </VStack>
+            <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} gap="5">
+              {cartonPacking.map((item) => (
+                <Box className="carton-highlight" key={item.size}>
+                  <VStack align="start" gap="2">
+                    <Text className="carton-big">{item.pieces}</Text>
+                    <Text color="#d4af37" fontWeight="800" letterSpacing="3px" fontSize="12px">PIECES PER CARTON</Text>
+                    <Text color="white" fontWeight="800" fontSize="18px" mt="2">ZT ZAIQO {item.size}</Text>
+                    <Text color="#777" fontSize="13px">Standard carton packing</Text>
+                  </VStack>
+                </Box>
+              ))}
+            </SimpleGrid>
+            <Text mt="5" color="#555" fontSize="11px" textAlign="center" w="full">
+              400g = 48 Pieces per Carton • 600g / 700g / 800g = 24 Pieces per Carton
+            </Text>
+          </Container>
+        </Box>
 
-      <Box id="products"><Container maxW="1200px" py={{ base: '80px', md: '110px' }}><Flex justify="space-between" align={{ base: 'start', md: 'end' }} gap="6" mb="10" direction={{ base: 'column', md: 'row' }}><VStack align="start" gap="3"><Text className="section-kicker">OUR PRODUCTS</Text><Heading fontSize={{ base: '34px', md: '48px' }}>ZT ZAIQO Range</Heading></VStack><Text color="#777" maxW="390px" lineHeight="1.7">Choose the pouch size that fits your home or retail needs.</Text></Flex><SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} gap="6">{products.map((product) => <Box className="product-card" key={product.size}><Flex justify="space-between" align="start"><Text className="product-size">{product.size}</Text><Text className="product-tag">{product.tag}</Text></Flex><Heading size="md" mt="8">ZT ZAIQO</Heading><Text color="#d4af37" fontSize="13px" mt="2">REFINED IODIZED SALT</Text><Text color="#888" mt="5" lineHeight="1.7">{product.description}</Text><Box className="product-footer"><Text color="#777" fontSize="12px">Premium everyday quality</Text><Text color="#d4af37">→</Text></Box></Box>)}</SimpleGrid></Container></Box>
+        <Box id="export" className="export-section">
+          <Container maxW="1200px" py={{ base: '80px', md: '105px' }}>
+            <Flex justify="space-between" align={{ base: 'start', md: 'end' }} gap="6" mb="10" direction={{ base: 'column', md: 'row' }}>
+              <VStack align="start" gap="4">
+                <Text className="section-kicker">EXPORT & BULK SUPPLY</Text>
+                <Heading fontSize={{ base: '36px', md: '52px' }}>Packed for your market.</Heading>
+                <Text color="#999" maxW="650px" lineHeight="1.8">
+                  Zohan Traders supplies refined iodized salt for international and bulk buyers. Pouches, 25kg bags and 50kg bags are available according to customer demand and packaging requirements.
+                </Text>
+              </VStack>
+                <AppLinkButton href="#contact" className="gold-button" size="lg">Request Export Quote</AppLinkButton>
+            </Flex>
+            <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} gap="5">
+              {exportOptions.map((item, index) => (
+                <Box className="export-card" key={item.title}>
+                  <Text className="export-card-number">0{index + 1}</Text>
+                  <Heading size="md" mt="7">{item.title}</Heading>
+                  <Text color="#d4af37" fontSize="12px" fontWeight="700" letterSpacing="1.5px" mt="3">{item.detail}</Text>
+                  <Text color="#888" mt="5" lineHeight="1.7">{item.copy}</Text>
+                </Box>
+              ))}
+            </SimpleGrid>
+            <Box mt="8" className="export-note">
+              <Text color="#aaa" fontSize="13px" lineHeight="1.8">
+                <Box as="span" color="#d4af37" fontWeight="700">Export inquiries:</Box> Share your destination country, required quantity and preferred packing format with our team for a quotation.
+              </Text>
+            </Box>
+          </Container>
+        </Box>
 
-      <Box id="cartons" className="carton-section"><Container maxW="1200px" py={{ base: '75px', md: '100px' }}><VStack align="start" gap="4" mb="10"><Text className="section-kicker">CARTON PACKING</Text><Heading fontSize={{ base: '36px', md: '50px' }}>Packing by pouch size.</Heading><Text color="#999" maxW="680px" lineHeight="1.8">Each ZT ZAIQO pouch size has its own standard carton quantity. Scan the QR code printed on our carton to visit Zohan Traders and check the packing details.</Text></VStack><SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} gap="5">{cartonPacking.map((item) => <Box className="carton-highlight" key={item.size}><VStack align="start" gap="2"><Text className="carton-big">{item.pieces}</Text><Text color="#d4af37" fontWeight="800" letterSpacing="3px" fontSize="12px">PIECES PER CARTON</Text><Text color="white" fontWeight="800" fontSize="18px" mt="2">ZT ZAIQO {item.size}</Text><Text color="#777" fontSize="13px">Standard carton packing</Text></VStack></Box>)}</SimpleGrid><Text mt="5" color="#555" fontSize="11px" textAlign="center" w="full">400g = 48 Pieces per Carton • 600g / 700g / 800g = 24 Pieces per Carton</Text></Container></Box>
+        <Box id="contact" className="contact-section">
+          <Container maxW="1200px" py={{ base: '75px', md: '95px' }}>
+            <SimpleGrid columns={{ base: 1, md: 2 }} gap="10" alignItems="center">
+              <VStack align="start" gap="4">
+                <Text className="section-kicker">CONTACT</Text>
+                <Heading fontSize={{ base: '38px', md: '54px' }}>
+                  Let’s build a<br />
+                  <Box as="span" className="gold-text">trusted partnership.</Box>
+                </Heading>
+                <Text color="#999" maxW="520px" lineHeight="1.8">
+                  For product inquiries, wholesale orders, export requirements and distribution opportunities, get in touch with Zohan Traders.
+                </Text>
+              </VStack>
+              <Box className="contact-card">
+                <Text color="#888" fontSize="12px" letterSpacing="2px">ZOHAN TRADERS</Text>
+                <Text fontSize="20px" fontWeight="700" mt="3">Refined Salt Business</Text>
+                <Text color="#999" mt="3">Hyderabad, Site Area, Pakistan</Text>
+                <Box className="gold-rule" />
+                <Text color="#d4af37" fontWeight="700">0313 3976670</Text>
+                <Text color="#d4af37" fontWeight="700" mt="1">0309 7431271</Text>
+                <a className="footer-link" href="mailto:zohantraders29@gmail.com" style={{ display: 'block', marginTop: '6px' }}>zohantraders29@gmail.com</a>
+                <Box mt="6" w="full">
+                  <AppLinkButton href="tel:+923133976670" className="gold-button">Call Us</AppLinkButton>
+                </Box>
+              </Box>
+            </SimpleGrid>
+          </Container>
+        </Box>
 
-      <Box id="export" className="export-section"><Container maxW="1200px" py={{ base: '80px', md: '105px' }}><Flex justify="space-between" align={{ base: 'start', md: 'end' }} gap="6" mb="10" direction={{ base: 'column', md: 'row' }}><VStack align="start" gap="4"><Text className="section-kicker">EXPORT & BULK SUPPLY</Text><Heading fontSize={{ base: '36px', md: '52px' }}>Packed for your market.</Heading><Text color="#999" maxW="650px" lineHeight="1.8">Zohan Traders supplies refined iodized salt for international and bulk buyers. Pouches, 25kg bags and 50kg bags are available according to customer demand and packaging requirements.</Text></VStack><AppLinkButton href="#contact" className="gold-button" size="lg">Request Export Quote</AppLinkButton></Flex><SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} gap="5">{exportOptions.map((item) => <Box className="export-card" key={item.title}><Text className="export-card-number">0{exportOptions.indexOf(item) + 1}</Text><Heading size="md" mt="7">{item.title}</Heading><Text color="#d4af37" fontSize="12px" fontWeight="700" letterSpacing="1.5px" mt="3">{item.detail}</Text><Text color="#888" mt="5" lineHeight="1.7">{item.copy}</Text></Box>)}</SimpleGrid><Box mt="8" className="export-note"><Text color="#aaa" fontSize="13px" lineHeight="1.8"><Box as="span" color="#d4af37" fontWeight="700">Export inquiries:</Box> Share your destination country, required quantity and preferred packing format with our team for a quotation.</Text></Box></Container></Box>
-
-      <Dashboard />
-
-      <Box id="contact" className="contact-section"><Container maxW="1200px" py={{ base: '75px', md: '95px' }}><SimpleGrid columns={{ base: 1, md: 2 }} gap="10" alignItems="center"><VStack align="start" gap="4"><Text className="section-kicker">CONTACT</Text><Heading fontSize={{ base: '38px', md: '54px' }}>Let’s build a<br /><Box as="span" className="gold-text">trusted partnership.</Box></Heading><Text color="#999" maxW="520px" lineHeight="1.8">For product inquiries, wholesale orders, export requirements and distribution opportunities, get in touch with Zohan Traders.</Text></VStack><Box className="contact-card"><Text color="#888" fontSize="12px" letterSpacing="2px">ZOHAN TRADERS</Text><Text fontSize="20px" fontWeight="700" mt="3">Refined Salt Business</Text><Text color="#999" mt="3">Hyderabad, Site Area, Pakistan</Text><Box className="gold-rule" /><Text color="#d4af37" fontWeight="700">0313 3976670</Text><Text color="#d4af37" fontWeight="700" mt="1">0309 7431271</Text><a className="footer-link" href="mailto:zohantraders29@gmail.com" style={{ display: 'block', marginTop: '6px' }}>zohantraders29@gmail.com</a><Box mt="6" w="full"><AppLinkButton href="tel:+923133976670" className="gold-button">Call Us</AppLinkButton></Box></Box></SimpleGrid></Container></Box>
-
-      <Box as="footer" className="site-footer"><Container maxW="1200px" py={{ base: '55px', md: '65px' }}><SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} gap={{ base: '10', md: '8' }}><VStack align="start" gap="4"><HStack gap="3"><Box className="brand-mark">ZT</Box><Box><Text fontWeight="800" letterSpacing="2px" fontSize="14px">ZOHAN TRADERS</Text><Text color="#888" fontSize="9px" letterSpacing="2.5px">REFINED SALT</Text></Box></HStack><Text color="#777" fontSize="13px" lineHeight="1.8" maxW="270px">Quality refined iodized salt, carefully packed for homes, retailers and growing businesses.</Text></VStack><VStack align="start" gap="3"><Text className="footer-heading">QUICK LINKS</Text>{navItems.map(([label, href]) => <a className="footer-link" key={label} href={href}>{label}</a>)}</VStack><VStack align="start" gap="3"><Text className="footer-heading">OUR BRAND</Text><Text color="#d4af37" fontWeight="700">ZT ZAIQO</Text><Text color="#777" fontSize="13px">Refined Iodized Salt</Text><Text color="#777" fontSize="13px">400g • 600g • 700g • 800g</Text></VStack><VStack align="start" gap="3"><Text className="footer-heading">CONTACT</Text><Text color="#999" fontSize="13px">📍 Hyderabad, Site Area, Pakistan</Text><a className="footer-link" href="tel:+923133976670">0313 3976670</a><a className="footer-link" href="tel:+923097431271">0309 7431271</a><a className="footer-link" href="mailto:zohantraders29@gmail.com">zohantraders29@gmail.com</a></VStack></SimpleGrid><Box className="footer-bottom"><Text color="#666" fontSize="12px">© 2026 Zohan Traders. All rights reserved.</Text><Text color="#555" fontSize="11px" letterSpacing="1.5px">PURE • CLEAN • RELIABLE</Text></Box></Container></Box>
+        <Box as="footer" className="site-footer">
+          <Container maxW="1200px" py={{ base: '55px', md: '65px' }}>
+            <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} gap={{ base: '10', md: '8' }}>
+              <VStack align="start" gap="4">
+                <HStack gap="3">
+                  <Box className="brand-mark">ZT</Box>
+                  <Box>
+                    <Text fontWeight="800" letterSpacing="2px" fontSize="14px">ZOHAN TRADERS</Text>
+                    <Text color="#888" fontSize="9px" letterSpacing="2.5px">REFINED SALT</Text>
+                  </Box>
+                </HStack>
+                <Text color="#777" fontSize="13px" lineHeight="1.8" maxW="270px">
+                  Quality refined iodized salt, carefully packed for homes, retailers and growing businesses.
+                </Text>
+              </VStack>
+              <VStack align="start" gap="3">
+                <Text className="footer-heading">QUICK LINKS</Text>
+                {[
+                  ['Home', '#dashboard'],
+                  ['Products', '#products'],
+                  ['Cartons', '#cartons'],
+                  ['Export', '#export'],
+                  ['Contact', '#contact'],
+                ].map(([label, href]) => <a className="footer-link" key={label} href={href}>{label}</a>)}
+              </VStack>
+              <VStack align="start" gap="3">
+                <Text className="footer-heading">OUR BRAND</Text>
+                <Text color="#d4af37" fontWeight="700">ZT ZAIQO</Text>
+                <Text color="#777" fontSize="13px">Refined Iodized Salt</Text>
+                <Text color="#777" fontSize="13px">400g • 600g • 700g • 800g</Text>
+              </VStack>
+              <VStack align="start" gap="3">
+                <Text className="footer-heading">CONTACT</Text>
+                <Text color="#999" fontSize="13px">📍 Hyderabad, Site Area, Pakistan</Text>
+                <a className="footer-link" href="tel:+923133976670">0313 3976670</a>
+                <a className="footer-link" href="tel:+923097431271">0309 7431271</a>
+                <a className="footer-link" href="mailto:zohantraders29@gmail.com">zohantraders29@gmail.com</a>
+              </VStack>
+            </SimpleGrid>
+            <Box className="footer-bottom">
+              <Text color="#666" fontSize="12px">© 2026 Zohan Traders. All rights reserved.</Text>
+              <Text color="#555" fontSize="11px" letterSpacing="1.5px">PURE • CLEAN • RELIABLE</Text>
+            </Box>
+          </Container>
+        </Box>
+      </Box>
     </Box>
   );
-}  return (\n    <Box bg="#080808" color="white" minH="100vh">\n      <Box className="side-nav">\n        <Box className="side-brand"><Box className="brand-mark">ZT</Box><Box className="side-brand-name"><Text fontWeight="800" letterSpacing="2px" fontSize="14px">ZOHAN TRADERS</Text><Text color="#888" fontSize="9px" letterSpacing="2px">REFINED SALT</Text></Box></Box>\n        <VStack className="side-menu" align="stretch" gap="2">\n          {[['⌂','Home','#dashboard'],['▦','Products','#products'],['▤','Cartons','#cartons'],['⇧','Export','#export'],['◉','Contact','#contact']].map(([icon,label,href]) => <a className="side-item" key={label} href={href}><Box className="side-icon">{icon}</Box><Text className="side-label">{label}</Text></a>)}\n        </VStack>\n        <Box className="side-bottom"><Button className="side-logout" onClick={() => { localStorage.removeItem('zohan_traders_session'); window.location.reload(); }}><Box className="side-icon">↪</Box><Text className="side-label">Sign Out</Text></Button></Box>\n      </Box>\n      <Box className="dashboard-main">\n        <Box id="dashboard"><Dashboard /></Box>\n      <Box id="products"><Container maxW="1200px" py={{ base: '80px', md: '110px' }}><Flex justify="space-between" align={{ base: 'start', md: 'end' }} gap="6" mb="10" direction={{ base: 'column', md: 'row' }}><VStack align="start" gap="3"><Text className="section-kicker">OUR PRODUCTS</Text><Heading fontSize={{ base: '34px', md: '48px' }}>ZT ZAIQO Range</Heading></VStack><Text color="#777" maxW="390px" lineHeight="1.7">Choose the pouch size that fits your home or retail needs.</Text></Flex><SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} gap="6">{products.map((product) => <Box className="product-card" key={product.size}><Flex justify="space-between" align="start"><Text className="product-size">{product.size}</Text><Text className="product-tag">{product.tag}</Text></Flex><Heading size="md" mt="8">ZT ZAIQO</Heading><Text color="#d4af37" fontSize="13px" mt="2">REFINED IODIZED SALT</Text><Text color="#888" mt="5" lineHeight="1.7">{product.description}</Text><Box className="product-footer"><Text color="#777" fontSize="12px">Premium everyday quality</Text><Text color="#d4af37">→</Text></Box></Box>)}</SimpleGrid></Container></Box>
-
-      <Box id="cartons" className="carton-section"><Container maxW="1200px" py={{ base: '75px', md: '100px' }}><VStack align="start" gap="4" mb="10"><Text className="section-kicker">CARTON PACKING</Text><Heading fontSize={{ base: '36px', md: '50px' }}>Packing by pouch size.</Heading><Text color="#999" maxW="680px" lineHeight="1.8">Each ZT ZAIQO pouch size has its own standard carton quantity. Scan the QR code printed on our carton to visit Zohan Traders and check the packing details.</Text></VStack><SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} gap="5">{cartonPacking.map((item) => <Box className="carton-highlight" key={item.size}><VStack align="start" gap="2"><Text className="carton-big">{item.pieces}</Text><Text color="#d4af37" fontWeight="800" letterSpacing="3px" fontSize="12px">PIECES PER CARTON</Text><Text color="white" fontWeight="800" fontSize="18px" mt="2">ZT ZAIQO {item.size}</Text><Text color="#777" fontSize="13px">Standard carton packing</Text></VStack></Box>)}</SimpleGrid><Text mt="5" color="#555" fontSize="11px" textAlign="center" w="full">400g = 48 Pieces per Carton • 600g / 700g / 800g = 24 Pieces per Carton</Text></Container></Box>
-
-      <Box id="export" className="export-section"><Container maxW="1200px" py={{ base: '80px', md: '105px' }}><Flex justify="space-between" align={{ base: 'start', md: 'end' }} gap="6" mb="10" direction={{ base: 'column', md: 'row' }}><VStack align="start" gap="4"><Text className="section-kicker">EXPORT & BULK SUPPLY</Text><Heading fontSize={{ base: '36px', md: '52px' }}>Packed for your market.</Heading><Text color="#999" maxW="650px" lineHeight="1.8">Zohan Traders supplies refined iodized salt for international and bulk buyers. Pouches, 25kg bags and 50kg bags are available according to customer demand and packaging requirements.</Text></VStack><AppLinkButton href="#contact" className="gold-button" size="lg">Request Export Quote</AppLinkButton></Flex><SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} gap="5">{exportOptions.map((item) => <Box className="export-card" key={item.title}><Text className="export-card-number">0{exportOptions.indexOf(item) + 1}</Text><Heading size="md" mt="7">{item.title}</Heading><Text color="#d4af37" fontSize="12px" fontWeight="700" letterSpacing="1.5px" mt="3">{item.detail}</Text><Text color="#888" mt="5" lineHeight="1.7">{item.copy}</Text></Box>)}</SimpleGrid><Box mt="8" className="export-note"><Text color="#aaa" fontSize="13px" lineHeight="1.8"><Box as="span" color="#d4af37" fontWeight="700">Export inquiries:</Box> Share your destination country, required quantity and preferred packing format with our team for a quotation.</Text></Box></Container></Box>
-
-      <Dashboard />
-
-      <Box id="contact" className="contact-section"><Container maxW="1200px" py={{ base: '75px', md: '95px' }}><SimpleGrid columns={{ base: 1, md: 2 }} gap="10" alignItems="center"><VStack align="start" gap="4"><Text className="section-kicker">CONTACT</Text><Heading fontSize={{ base: '38px', md: '54px' }}>Let’s build a<br /><Box as="span" className="gold-text">trusted partnership.</Box></Heading><Text color="#999" maxW="520px" lineHeight="1.8">For product inquiries, wholesale orders, export requirements and distribution opportunities, get in touch with Zohan Traders.</Text></VStack><Box className="contact-card"><Text color="#888" fontSize="12px" letterSpacing="2px">ZOHAN TRADERS</Text><Text fontSize="20px" fontWeight="700" mt="3">Refined Salt Business</Text><Text color="#999" mt="3">Hyderabad, Site Area, Pakistan</Text><Box className="gold-rule" /><Text color="#d4af37" fontWeight="700">0313 3976670</Text><Text color="#d4af37" fontWeight="700" mt="1">0309 7431271</Text><a className="footer-link" href="mailto:zohantraders29@gmail.com" style={{ display: 'block', marginTop: '6px' }}>zohantraders29@gmail.com</a><Box mt="6" w="full"><AppLinkButton href="tel:+923133976670" className="gold-button">Call Us</AppLinkButton></Box></Box></SimpleGrid></Container></Box>
-
-\n    </Box>\n  );
+}
