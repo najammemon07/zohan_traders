@@ -52,71 +52,67 @@ export default function App() {
 
   return (
     <Box bg="#080808" color="white" minH="100vh">
-      <Box className="side-nav">
-        <Box className="side-brand">
-          <Box className="brand-mark">ZT</Box>
-          <Box className="side-brand-name">
-            <Text fontWeight="800" letterSpacing="2px" fontSize="14px">ZOHAN TRADERS</Text>
-            <Text color="#888" fontSize="9px" letterSpacing="2px">REFINED SALT</Text>
-          </Box>
-        </Box>
-
-        <VStack className="side-menu" align="stretch" gap="2">
-          {[
-            ['⌂', 'Home', '#dashboard'],
-            ['▦', 'Products', '#products'],
-            ['▤', 'Cartons', '#cartons'],
-            ['⇧', 'Export', '#export'],
-            ['◉', 'Contact', '#contact'],
-          ].map(([icon, label, href]) => (
-            <a className="side-item" key={label} href={href}>
-              <Box className="side-icon">{icon}</Box>
-              <Text className="side-label">{label}</Text>
+      <Box as="header" className="top-navbar">
+        <Container maxW="1200px">
+          <Flex align="center" justify="space-between" gap="6" minH="72px">
+            <a href="#dashboard" aria-label="Zohan Traders home">
+              <HStack gap="3">
+                <Box className="brand-mark">ZT</Box>
+                <Box display={{ base: 'none', sm: 'block' }}>
+                  <Text fontWeight="800" letterSpacing="2px" fontSize="14px">ZOHAN TRADERS</Text>
+                  <Text color="#888" fontSize="9px" letterSpacing="2.5px">REFINED SALT</Text>
+                </Box>
+              </HStack>
             </a>
-          ))}
-        </VStack>
-
-
-      </Box>
-
-      <Box className="profile-area">
-        <Button
-          className="profile-trigger"
-          variant="ghost"
-          onClick={() => setProfileOpen((open) => !open)}
-          aria-label="Open profile menu"
-        >
-          <Box className="profile-avatar">{initials}</Box>
-          <Box className="profile-trigger-info">
-            <Text className="profile-name">{userName}</Text>
-            <Text className="profile-email">{userEmail}</Text>
-          </Box>
-          <Text className="profile-chevron">{profileOpen ? '⌃' : '⌄'}</Text>
-        </Button>
-
-        {profileOpen && (
-          <Box className="profile-menu">
-            <Box className="profile-menu-head">
-              <Box className="profile-avatar profile-avatar-large">{initials}</Box>
-              <Box minW="0">
-                <Text color="white" fontWeight="700" fontSize="14px" noOfLines={1}>{userName}</Text>
-                <Text color="#777" fontSize="11px" noOfLines={1}>{userEmail}</Text>
-                {session.shop && <Text color="#d4af37" fontSize="10px" mt="1" noOfLines={1}>{session.shop}</Text>}
-              </Box>
+            <HStack gap={{ base: '3', md: '6' }} display={{ base: 'none', md: 'flex' }}>
+              {[
+                ['Home', '#dashboard'],
+                ['Products', '#products'],
+                ['Cartons', '#cartons'],
+                ['Export', '#export'],
+                ['Contact', '#contact'],
+              ].map(([label, href]) => <a className="nav-link" key={label} href={href}>{label}</a>)}
+            </HStack>
+            <Box className="profile-area">
+              <Button
+                className="profile-trigger"
+                variant="ghost"
+                onClick={() => setProfileOpen((open) => !open)}
+                aria-label="Open profile menu"
+              >
+                <Box className="profile-avatar">{initials}</Box>
+                <Box className="profile-trigger-info">
+                  <Text className="profile-name">{userName}</Text>
+                  <Text className="profile-email">{userEmail}</Text>
+                </Box>
+                <Text className="profile-chevron">{profileOpen ? '⌃' : '⌄'}</Text>
+              </Button>
+              {profileOpen && (
+                <Box className="profile-menu">
+                  <Box className="profile-menu-head">
+                    <Box className="profile-avatar profile-avatar-large">{initials}</Box>
+                    <Box minW="0">
+                      <Text color="white" fontWeight="700" fontSize="14px" noOfLines={1}>{userName}</Text>
+                      <Text color="#777" fontSize="11px" noOfLines={1}>{userEmail}</Text>
+                      {session.shop && <Text color="#d4af37" fontSize="10px" mt="1" noOfLines={1}>{session.shop}</Text>}
+                    </Box>
+                  </Box>
+                  <Box className="profile-menu-divider" />
+                  <Button
+                    className="profile-logout"
+                    onClick={() => {
+                      localStorage.removeItem('zohan_traders_session');
+                      window.location.reload();
+                    }}
+                  >
+                    <Box className="profile-logout-icon">↪</Box>
+                    <Text>Logout</Text>
+                  </Button>
+                </Box>
+              )}
             </Box>
-            <Box className="profile-menu-divider" />
-            <Button
-              className="profile-logout"
-              onClick={() => {
-                localStorage.removeItem('zohan_traders_session');
-                window.location.reload();
-              }}
-            >
-              <Box className="profile-logout-icon">↪</Box>
-              <Text>Logout</Text>
-            </Button>
-          </Box>
-        )}
+          </Flex>
+        </Container>
       </Box>
 
       <Box className="dashboard-main">
