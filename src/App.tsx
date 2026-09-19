@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import Dashboard from './Dashboard';
 import {
   Box,
@@ -38,6 +38,18 @@ function AppLinkButton({ href, children, className, size = 'md' }: { href: strin
 }
 
 export default function App() {
+  const [profileOpen, setProfileOpen] = useState(false);
+  const session = (() => {
+    try {
+      return JSON.parse(localStorage.getItem('zohan_traders_session') || '{}') as { name?: string; email?: string; shop?: string };
+    } catch {
+      return {};
+    }
+  })();
+  const userName = session.name || 'User';
+  const userEmail = session.email || '';
+  const initials = userName.split(' ').filter(Boolean).slice(0, 2).map((part) => part[0]?.toUpperCase()).join('') || 'U';
+
   return (
     <Box bg="#080808" color="white" minH="100vh">
       <Box className="side-nav">
@@ -64,18 +76,47 @@ export default function App() {
           ))}
         </VStack>
 
-        <Box className="side-bottom">
-          <Button
-            className="side-logout"
-            onClick={() => {
-              localStorage.removeItem('zohan_traders_session');
-              window.location.reload();
-            }}
-          >
-            <Box className="side-icon">↪</Box>
-            <Text className="side-label">Sign Out</Text>
-          </Button>
-        </Box>
+
+      </Box>
+
+      <Box className="profile-area">
+        <Button
+          className="profile-trigger"
+          variant="ghost"
+          onClick={() => setProfileOpen((open) => !open)}
+          aria-label="Open profile menu"
+        >
+          <Box className="profile-avatar">{initials}</Box>
+          <Box className="profile-trigger-info">
+            <Text className="profile-name">{userName}</Text>
+            <Text className="profile-email">{userEmail}</Text>
+          </Box>
+          <Text className="profile-chevron">{profileOpen ? '⌃' : '⌄'}</Text>
+        </Button>
+
+        {profileOpen && (
+          <Box className="profile-menu">
+            <Box className="profile-menu-head">
+              <Box className="profile-avatar profile-avatar-large">{initials}</Box>
+              <Box minW="0">
+                <Text color="white" fontWeight="700" fontSize="14px" noOfLines={1}>{userName}</Text>
+                <Text color="#777" fontSize="11px" noOfLines={1}>{userEmail}</Text>
+                {session.shop && <Text color="#d4af37" fontSize="10px" mt="1" noOfLines={1}>{session.shop}</Text>}
+              </Box>
+            </Box>
+            <Box className="profile-menu-divider" />
+            <Button
+              className="profile-logout"
+              onClick={() => {
+                localStorage.removeItem('zohan_traders_session');
+                window.location.reload();
+              }}
+            >
+              <Box className="profile-logout-icon">↪</Box>
+              <Text>Logout</Text>
+            </Button>
+          </Box>
+        )}
       </Box>
 
       <Box className="dashboard-main">
