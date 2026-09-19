@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from 'react';
+import Dashboard from './Dashboard';
 import {
   Box,
   Button,
@@ -39,6 +40,7 @@ const navItems = [
   ['Products', '#products'],
   ['Cartons', '#cartons'],
   ['Export', '#export'],
+  ['Dashboard', '#dashboard'],
   ['Contact', '#contact'],
 ];
 
@@ -73,6 +75,8 @@ export default function App() {
       <Box id="cartons" className="carton-section"><Container maxW="1200px" py={{ base: '75px', md: '100px' }}><VStack align="start" gap="4" mb="10"><Text className="section-kicker">CARTON PACKING</Text><Heading fontSize={{ base: '36px', md: '50px' }}>Packing by pouch size.</Heading><Text color="#999" maxW="680px" lineHeight="1.8">Each ZT ZAIQO pouch size has its own standard carton quantity. Scan the QR code printed on our carton to visit Zohan Traders and check the packing details.</Text></VStack><SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} gap="5">{cartonPacking.map((item) => <Box className="carton-highlight" key={item.size}><VStack align="start" gap="2"><Text className="carton-big">{item.pieces}</Text><Text color="#d4af37" fontWeight="800" letterSpacing="3px" fontSize="12px">PIECES PER CARTON</Text><Text color="white" fontWeight="800" fontSize="18px" mt="2">ZT ZAIQO {item.size}</Text><Text color="#777" fontSize="13px">Standard carton packing</Text></VStack></Box>)}</SimpleGrid><Text mt="5" color="#555" fontSize="11px" textAlign="center" w="full">400g = 48 Pieces per Carton • 600g / 700g / 800g = 24 Pieces per Carton</Text></Container></Box>
 
       <Box id="export" className="export-section"><Container maxW="1200px" py={{ base: '80px', md: '105px' }}><Flex justify="space-between" align={{ base: 'start', md: 'end' }} gap="6" mb="10" direction={{ base: 'column', md: 'row' }}><VStack align="start" gap="4"><Text className="section-kicker">EXPORT & BULK SUPPLY</Text><Heading fontSize={{ base: '36px', md: '52px' }}>Packed for your market.</Heading><Text color="#999" maxW="650px" lineHeight="1.8">Zohan Traders supplies refined iodized salt for international and bulk buyers. Pouches, 25kg bags and 50kg bags are available according to customer demand and packaging requirements.</Text></VStack><AppLinkButton href="#contact" className="gold-button" size="lg">Request Export Quote</AppLinkButton></Flex><SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} gap="5">{exportOptions.map((item) => <Box className="export-card" key={item.title}><Text className="export-card-number">0{exportOptions.indexOf(item) + 1}</Text><Heading size="md" mt="7">{item.title}</Heading><Text color="#d4af37" fontSize="12px" fontWeight="700" letterSpacing="1.5px" mt="3">{item.detail}</Text><Text color="#888" mt="5" lineHeight="1.7">{item.copy}</Text></Box>)}</SimpleGrid><Box mt="8" className="export-note"><Text color="#aaa" fontSize="13px" lineHeight="1.8"><Box as="span" color="#d4af37" fontWeight="700">Export inquiries:</Box> Share your destination country, required quantity and preferred packing format with our team for a quotation.</Text></Box></Container></Box>
+
+      <Dashboard />
 
       <Box id="contact" className="contact-section"><Container maxW="1200px" py={{ base: '75px', md: '95px' }}><SimpleGrid columns={{ base: 1, md: 2 }} gap="10" alignItems="center"><VStack align="start" gap="4"><Text className="section-kicker">CONTACT</Text><Heading fontSize={{ base: '38px', md: '54px' }}>Let’s build a<br /><Box as="span" className="gold-text">trusted partnership.</Box></Heading><Text color="#999" maxW="520px" lineHeight="1.8">For product inquiries, wholesale orders, export requirements and distribution opportunities, get in touch with Zohan Traders.</Text></VStack><Box className="contact-card"><Text color="#888" fontSize="12px" letterSpacing="2px">ZOHAN TRADERS</Text><Text fontSize="20px" fontWeight="700" mt="3">Refined Salt Business</Text><Text color="#999" mt="3">Hyderabad, Site Area, Pakistan</Text><Box className="gold-rule" /><Text color="#d4af37" fontWeight="700">0313 3976670</Text><Text color="#d4af37" fontWeight="700" mt="1">0309 7431271</Text><a className="footer-link" href="mailto:zohantraders29@gmail.com" style={{ display: 'block', marginTop: '6px' }}>zohantraders29@gmail.com</a><Box mt="6" w="full"><AppLinkButton href="tel:+923133976670" className="gold-button">Call Us</AppLinkButton></Box></Box></SimpleGrid></Container></Box>
 
